@@ -1,0 +1,70 @@
+type NftsMinted @entity {
+  id: ID!
+  bedroomNftCount: BigInt!
+  upgradeNftCount: BigInt!
+	bedroomNfts: [BedroomNft!]!
+	upgradeNfts: [UpgradeNft!]! 
+}
+
+type NftsOwned @entity {
+  id: ID!
+  owner: Bytes!
+  bedroomNftCount: BigInt!
+  upgradeNftCount: BigInt!
+  bedroomNfts: [BedroomNft!]! 
+  upgradeNfts: [UpgradeNft!]! 
+}
+
+type BedroomNft @entity {
+  id: ID!
+  tokenId: BigInt!
+  upgradeNfts: [UpgradeNft!]! @derivedFrom(field: "bedroomNft")
+  owner: Bytes!
+  ambianceScore: Int!
+  qualityScore: Int!
+  luckScore: Int!
+  comfortabilityScore: Int!
+  totalScore: Int!
+  level: BigInt!
+  value: BigInt!
+  designUri: String!
+}
+
+type UpgradeNft @entity {
+  id: ID!
+  tokenId: BigInt!
+  amount: BigInt!
+  owner: Bytes!
+  designUri: String!
+  data: Int!
+  level: Int!
+  levelMin: Int!
+  value: Int!
+  attributeIndex: Int!
+  valueToAdd: Int!
+  type: Int!
+  bedroomNft: BedroomNft!
+}
+
+type BedroomNftMinted @entity {
+  id: ID!
+  bedroomNft: BedroomNft!
+  timestamp: BigInt!
+}
+
+type UpgradeNftMinted @entity {
+  id: ID!
+  upgradeNft: UpgradeNft!
+  amount: BigInt!
+  timestamp: BigInt!
+}
+
+type UpgradeNftLinked @entity {
+  id: ID!
+  isLinked: Boolean!
+  owner: Bytes!
+  upgradeNft: UpgradeNft!
+  bedroomNft: BedroomNft!
+  newDesignUri: String!
+  timestamp: BigInt!
+}

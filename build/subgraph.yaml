@@ -1,0 +1,44 @@
+specVersion: 0.0.4
+schema:
+  file: schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Tracker
+    network: matic
+    source:
+      address: "0xCaEB84F7F812Ae85b2FBD9672B61e70BC79Dc410"
+      abi: Tracker
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - BedroomNftLinkedToWallet
+        - BedroomNftUnlinkedFromWallet
+        - UpgradeNftLinkedToBedroomNft
+        - UpgradeNftLinkedToWallet
+        - UpgradeNftUnlinkedFromBedroomNft
+        - UpgradeNftUnlinkedFromWallet
+      abis:
+        - name: Tracker
+          file: Tracker/abis/Tracker.json
+        - name: BedroomNft
+          file: Tracker/abis/BedroomNft.json
+        - name: UpgradeNft
+          file: Tracker/abis/UpgradeNft.json
+        - name: Dex
+          file: Tracker/abis/Dex.json
+      eventHandlers:
+        - event: BedroomNftLinkedToWallet(indexed uint256,indexed address)
+          handler: handleBedroomNftLinkedToWallet
+        - event: BedroomNftUnlinkedFromWallet(indexed uint256,indexed address)
+          handler: handleBedroomNftUnlinkedFromWallet
+        - event: UpgradeNftLinkedToBedroomNft(indexed uint256,indexed uint256,uint256)
+          handler: handleUpgradeNftLinkedToBedroomNft
+        - event: UpgradeNftLinkedToWallet(indexed address,indexed uint256,uint256)
+          handler: handleUpgradeNftLinkedToWallet
+        - event: UpgradeNftUnlinkedFromBedroomNft(indexed uint256,indexed uint256,uint256)
+          handler: handleUpgradeNftUnlinkedFromBedroomNft
+        - event: UpgradeNftUnlinkedFromWallet(indexed address,indexed uint256,uint256)
+          handler: handleUpgradeNftUnlinkedFromWallet
+      file: Tracker/Tracker.wasm

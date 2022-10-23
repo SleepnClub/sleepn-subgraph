@@ -1,0 +1,257 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_bedroomNftContractAddr",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_dexAddress",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "IsAlreadyLinked",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "IsNotLinked",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "levelMin",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint256",
+        "name": "bedroomNftLevel",
+        "type": "uint256"
+      }
+    ],
+    "name": "LevelTooLow",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "caller",
+        "type": "address"
+      }
+    ],
+    "name": "NftNotOwned",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "caller",
+        "type": "address"
+      }
+    ],
+    "name": "RestrictedAccess",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "valueToAdd",
+        "type": "uint16"
+      }
+    ],
+    "name": "ScoreCannotBeGreaterThan100",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "StateNotUpdated",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "bedroomNftId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "upgradeNftId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      }
+    ],
+    "name": "UpgradeNftLinked",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "bedroomNftId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "upgradeNftId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      }
+    ],
+    "name": "UpgradeNftUnlinked",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "bedroomNftContract",
+    "outputs": [
+      {
+        "internalType": "contract IBedroomNft",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "dexAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_owner",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_bedroomNftId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_upgradeNftId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "_designURI",
+        "type": "string"
+      }
+    ],
+    "name": "linkUpgradeNft",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "trackerInstance",
+    "outputs": [
+      {
+        "internalType": "contract Tracker",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_owner",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_bedroomNftId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_upgradeNftId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "_designURI",
+        "type": "string"
+      }
+    ],
+    "name": "unlinkUpgradeNft",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "upgradeNftContract",
+    "outputs": [
+      {
+        "internalType": "contract IUpgradeNft",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
