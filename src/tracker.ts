@@ -24,7 +24,8 @@ import {
   UpgradeNftMinted,
   UpgradeNftLinked
 } from "../generated/schema";
-import { BEDROOM_NFT_ADDRESS } from "./helpers";
+
+const BEDROOM_NFT_ADDRESS = "0x2AC6960E44ef6f4465Ea74Cc1a96fF0f7F05E5a3";
 
 // handle BedroomNftMinted event
 export function handleBedroomNftMinted(
