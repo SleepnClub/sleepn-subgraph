@@ -2,19 +2,15 @@
   "matic": {
     "Tracker": {
       "address": "0xCaEB84F7F812Ae85b2FBD9672B61e70BC79Dc410",
-      "startBlock": 34714162
+      "startBlock": 34746585 
     },
     "BedroomNft": {
       "address": "0x2AC6960E44ef6f4465Ea74Cc1a96fF0f7F05E5a3",
-      "startBlock": 34714162
+      "startBlock": 34746585 
     },
     "UpgradeNft": {
       "address": "0xCBE4EC04ABb4593348f405B898Fa5a6DEcD325c6",
-      "startBlock": 34714162
-    },
-    "Dex": {
-      "address": "0x67b39c00f10d22B0cAFcf253a8D6cdA5290FBba6",
-      "startBlock": 34714162
+      "startBlock": 34746585 
     }
   }
 }

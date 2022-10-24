@@ -20,6 +20,10 @@ dataSources:
       abis:
         - name: Tracker
           file: Tracker/abis/Tracker.json
+        - name: BedroomNft
+          file: Tracker/abis/BedroomNft.json
+        - name: UpgradeNft
+          file: Tracker/abis/UpgradeNft.json
       eventHandlers:
         - event: BedroomNftLinkedToWallet(indexed uint256,indexed address)
           handler: handleBedroomNftLinkedToWallet
