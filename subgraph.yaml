@@ -13,21 +13,13 @@ dataSources:
       apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
-        - BedroomNftLinkedToWallet
-        - BedroomNftUnlinkedFromWallet
-        - UpgradeNftLinkedToBedroomNft
-        - UpgradeNftLinkedToWallet
-        - UpgradeNftUnlinkedFromBedroomNft
-        - UpgradeNftUnlinkedFromWallet
+        - UpgradeNftLinked
+        - NftsOwned
+        - BedroomNft
+        - UpgradeNft
       abis:
         - name: Tracker
           file: ./abis/Tracker.json
-        - name: BedroomNft
-          file: ./abis/BedroomNft.json
-        - name: UpgradeNft
-          file: ./abis/UpgradeNft.json
-        - name: Dex
-          file: ./abis/Dex.json
       eventHandlers:
         - event: BedroomNftLinkedToWallet(indexed uint256,indexed address)
           handler: handleBedroomNftLinkedToWallet
@@ -41,4 +33,49 @@ dataSources:
           handler: handleUpgradeNftUnlinkedFromBedroomNft
         - event: UpgradeNftUnlinkedFromWallet(indexed address,indexed uint256,uint256)
           handler: handleUpgradeNftUnlinkedFromWallet
+      file: ./src/tracker.ts
+  - kind: ethereum
+    name: BedroomNft
+    network: matic
+    source:
+      address: "0x2AC6960E44ef6f4465Ea74Cc1a96fF0f7F05E5a3"
+      abi: BedroomNft
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - BedroomNftMinted
+        - NftsMinted
+        - UpgradeNft
+        - NftsOwned
+      abis:
+        - name: BedroomNft
+          file: ./abis/BedroomNft.json
+      eventHandlers:
+        - event: BedroomNftMinted(indexed address,indexed
+            uint256,uint256,uint16,uint16,uint16,uint16)
+          handler: handleBedroomNftMinted
+      file: ./src/tracker.ts
+  - kind: ethereum
+    name: UpgradeNft
+    network: matic
+    source:
+      address: "0xCBE4EC04ABb4593348f405B898Fa5a6DEcD325c6"
+      abi: UpgradeNft
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - UpgradeNftMinted
+        - NftsMinted
+        - BedroomNft
+        - NftsOwned
+      abis:
+        - name: UpgradeNft
+          file: ./abis/UpgradeNft.json
+      eventHandlers:
+        - event: UpgradeNftMinted(indexed address,uint256,uint256)
+          handler: handleUpgradeNftMinted
       file: ./src/tracker.ts
