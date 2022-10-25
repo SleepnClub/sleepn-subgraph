@@ -46,18 +46,14 @@ export function handleBedroomNftMinted(
   let nftsMinted = NftsMinted.load("1");
   if (nftsMinted == null) {
     nftsMinted = new NftsMinted("1");
+    nftsMinted.bedroomNftCount = BigInt.fromI32(0);
+    nftsMinted.upgradeNftCount = BigInt.fromI32(0);
+    nftsMinted.bedroomNfts = [];
+    nftsMinted.upgradeNfts = [];
   } 
   nftsMinted.bedroomNftCount = nftsMinted.bedroomNftCount.plus(BigInt.fromI32(1));
   nftsMinted.bedroomNfts.push(bedroomNft.id);
   nftsMinted.save();
-  // Create NftsOwned entity
-  let nftsOwned = NftsOwned.load(event.params.owner.toHex());
-  if (nftsOwned == null) {
-    nftsOwned = new NftsOwned(event.params.owner.toHex());
-  }
-  nftsOwned.bedroomNftCount = nftsOwned.bedroomNftCount.plus(BigInt.fromI32(1));
-  nftsOwned.bedroomNfts.push(bedroomNft.id);
-  nftsOwned.save();
 }
 
 // handle UpgradeNftMinted event
@@ -67,7 +63,7 @@ export function handleUpgradeNftMinted(
   // Load UpgradeNft entity
   let upgradeNft = UpgradeNftEntity.load(`${event.params.owner.toHex()}-${event.params.tokenId.toString()}`);
   if (upgradeNft == null) {
-    upgradeNft = new UpgradeNftEntity(`${event.params.owner.toHex()}-${event.params.tokenId.toString()}`);
+    return;
   }
   // Create UpgradeNftMinted entity
   let upgradeNftMinted = new UpgradeNftMinted(event.transaction.hash.toHex());
@@ -79,18 +75,14 @@ export function handleUpgradeNftMinted(
   let nftsMinted = NftsMinted.load("1");
   if (nftsMinted == null) {
     nftsMinted = new NftsMinted("1");
+    nftsMinted.bedroomNftCount = BigInt.fromI32(0);
+    nftsMinted.upgradeNftCount = BigInt.fromI32(0);
+    nftsMinted.bedroomNfts = [];
+    nftsMinted.upgradeNfts = [];
   }
   nftsMinted.upgradeNfts.push(upgradeNft.id);
   nftsMinted.upgradeNftCount = nftsMinted.upgradeNftCount.plus(event.params.amount);
   nftsMinted.save();
-  // Create NftsOwned entity
-  let nftsOwned = NftsOwned.load(event.params.owner.toHex());
-  if (nftsOwned == null) {
-    nftsOwned = new NftsOwned(event.params.owner.toHex());
-  }
-  nftsOwned.upgradeNftCount = nftsOwned.upgradeNftCount.plus(event.params.amount);
-  nftsOwned.bedroomNfts.push(upgradeNft.id);
-  nftsOwned.save();
 }
 
 // handle BedroomNftLinkedToWallet event
@@ -112,6 +104,7 @@ export function handleBedroomNftLinkedToWallet(
     bedroomNft.level = data.value5;
     bedroomNft.value = data.value6;
     bedroomNft.designUri = uri;
+    bedroomNft.totalScore = bedroomNft.ambianceScore + bedroomNft.qualityScore + bedroomNft.luckScore + bedroomNft.comfortabilityScore;
   }
   // Update BedroomNft entity
   bedroomNft.owner = event.params.owner;
@@ -120,6 +113,10 @@ export function handleBedroomNftLinkedToWallet(
   let nftsOwned = NftsOwned.load(event.params.owner.toHex());
   if (nftsOwned == null) {
     nftsOwned = new NftsOwned(event.params.owner.toHex());
+    nftsOwned.bedroomNftCount = BigInt.fromI32(0);
+    nftsOwned.bedroomNfts = [];
+    nftsOwned.upgradeNftCount = BigInt.fromI32(0);
+    nftsOwned.upgradeNfts = [];
   } 
   // Update NftsOwned entity 
   nftsOwned.bedroomNftCount = nftsOwned.bedroomNftCount.plus(BigInt.fromI32(1));
@@ -136,19 +133,14 @@ export function handleBedroomNftUnlinkedFromWallet(
   if (bedroomNft == null) {
     return;
   }
-  const bedroomNftId: string = bedroomNft.id;
-  const owner = bedroomNft.owner;
-  // Update BedroomNft entity
-  bedroomNft.owner = new Address(0x0000000000000000000000000000000000000000);
-  bedroomNft.save();
   // Load NftsOwned entity
-  let nftsOwned = NftsOwned.load(owner.toHex());
+  let nftsOwned = NftsOwned.load(bedroomNft.owner.toHex());
   if (nftsOwned == null) {
     return;
   } 
   // Update NftsOwned entity 
   nftsOwned.bedroomNftCount = nftsOwned.bedroomNftCount.minus(BigInt.fromI32(1));
-  let index = nftsOwned.bedroomNfts.indexOf(bedroomNftId);
+  let index = nftsOwned.bedroomNfts.indexOf(bedroomNft.id);
   nftsOwned.bedroomNfts = nftsOwned.bedroomNfts.splice(index, 1);
   nftsOwned.save(); 
 }
@@ -161,6 +153,10 @@ export function handleUpgradeNftLinkedToWallet(
   let nftsOwned = NftsOwned.load(event.params.owner.toHex());
   if (nftsOwned == null) {
     nftsOwned = new NftsOwned(event.params.owner.toHex());
+    nftsOwned.bedroomNftCount = BigInt.fromI32(0);
+    nftsOwned.bedroomNfts = [];
+    nftsOwned.upgradeNftCount = BigInt.fromI32(0);
+    nftsOwned.upgradeNfts = [];
   } 
   // Load UpgradeNft entity
   let upgradeNft = UpgradeNftEntity.load(`${event.params.owner.toHex()}-${event.params.upgradeNftId.toString()}`);
@@ -177,6 +173,7 @@ export function handleUpgradeNftLinkedToWallet(
     upgradeNft.valueToAdd = data.value4;
     upgradeNft.type = data.value5;
     upgradeNft.designUri = uri;
+    upgradeNft.amount = BigInt.fromI32(0);
     nftsOwned.upgradeNfts.push(upgradeNft.id);
   }
   // Update UpgradeNft entity
@@ -204,7 +201,6 @@ export function handleUpgradeNftUnlinkedFromWallet(
   }
   // Update UpgradeNft entity
   upgradeNft.amount = upgradeNft.amount.minus(event.params.amount);
-  upgradeNft.owner = new Address(0x0000000000000000000000000000000000000000);
   upgradeNft.save();
   // Update NftsOwned entity 
   nftsOwned.upgradeNftCount = nftsOwned.upgradeNftCount.minus(event.params.amount);
@@ -243,6 +239,7 @@ export function handleUpgradeNftLinkedToBedroomNft(
   bedroomNft.level = dataBedroomNft.value5;
   bedroomNft.value = dataBedroomNft.value6;
   bedroomNft.designUri = uriBedroomNft;
+  bedroomNft.totalScore = bedroomNft.ambianceScore + bedroomNft.qualityScore + bedroomNft.luckScore + bedroomNft.comfortabilityScore;
   bedroomNft.save();
   // Create UpgradeNftLinked entity
   let upgradeNftLinked = new UpgradeNftLinked(event.transaction.hash.toHex());

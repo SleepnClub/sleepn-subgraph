@@ -8,7 +8,6 @@ type NftsMinted @entity {
 
 type NftsOwned @entity {
   id: ID!
-  owner: Bytes!
   bedroomNftCount: BigInt!
   upgradeNftCount: BigInt!
   bedroomNfts: [BedroomNft!]! 

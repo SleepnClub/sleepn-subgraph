@@ -110,15 +110,6 @@ export class NftsOwned extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get owner(): Bytes {
-    let value = this.get("owner");
-    return value!.toBytes();
-  }
-
-  set owner(value: Bytes) {
-    this.set("owner", Value.fromBytes(value));
-  }
-
   get bedroomNftCount(): BigInt {
     let value = this.get("bedroomNftCount");
     return value!.toBigInt();
