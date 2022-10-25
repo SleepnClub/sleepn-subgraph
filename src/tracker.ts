@@ -35,7 +35,19 @@ export function handleBedroomNftMinted(
   // Load BedroomNft entity
   let bedroomNft = BedroomNftEntity.load(event.params.tokenId.toString());
   if (bedroomNft == null) {
-    return;
+    bedroomNft = new BedroomNftEntity(event.params.tokenId.toString());
+    const bedroomNftInstance = BedroomNft.bind(Address.fromString(BEDROOM_NFT_ADDRESS));
+    const data = bedroomNftInstance.getData(event.params.tokenId);
+    const uri = bedroomNftInstance.uri(event.params.tokenId);
+    bedroomNft.tokenId = event.params.tokenId;
+    bedroomNft.ambianceScore = data.value0;
+    bedroomNft.qualityScore = data.value1;
+    bedroomNft.luckScore = data.value2;
+    bedroomNft.comfortabilityScore = data.value3;
+    bedroomNft.level = data.value5;
+    bedroomNft.value = data.value6;
+    bedroomNft.designUri = uri;
+    bedroomNft.totalScore = bedroomNft.ambianceScore + bedroomNft.qualityScore + bedroomNft.luckScore + bedroomNft.comfortabilityScore;
   }
   // Create BedroomNftMinted entity
   let bedroomNftMinted = new BedroomNftMinted(event.transaction.hash.toHex());
@@ -93,18 +105,15 @@ export function handleBedroomNftLinkedToWallet(
   let bedroomNft = BedroomNftEntity.load(event.params.bedroomNftId.toString());
   if (bedroomNft == null) {
     bedroomNft = new BedroomNftEntity(event.params.bedroomNftId.toString());
-    const bedroomNftInstance = BedroomNft.bind(Address.fromString(BEDROOM_NFT_ADDRESS));
-    const data = bedroomNftInstance.getData(event.params.bedroomNftId);
-    const uri = bedroomNftInstance.uri(event.params.bedroomNftId);
     bedroomNft.tokenId = event.params.bedroomNftId;
-    bedroomNft.ambianceScore = data.value0;
-    bedroomNft.qualityScore = data.value1;
-    bedroomNft.luckScore = data.value2;
-    bedroomNft.comfortabilityScore = data.value3;
-    bedroomNft.level = data.value5;
-    bedroomNft.value = data.value6;
-    bedroomNft.designUri = uri;
-    bedroomNft.totalScore = bedroomNft.ambianceScore + bedroomNft.qualityScore + bedroomNft.luckScore + bedroomNft.comfortabilityScore;
+    bedroomNft.ambianceScore = 0;
+    bedroomNft.qualityScore = 0;
+    bedroomNft.luckScore = 0;
+    bedroomNft.comfortabilityScore = 0;
+    bedroomNft.level = BigInt.fromI32(0);
+    bedroomNft.value = BigInt.fromI32(0);
+    bedroomNft.designUri = "";
+    bedroomNft.totalScore = 0;
   }
   // Update BedroomNft entity
   bedroomNft.owner = event.params.owner;
